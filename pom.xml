@@ -20,12 +20,20 @@
 	<developers>
 		<developer/>
 	</developers>
+	<!-- scm setting allows maven plugins to update git repos -->
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection>scm:git:https://github.com/gerridrose/elevator.git</connection>
+		<developerConnection>scm:git:git@github.com:gerridrose/elevator.git</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/gerridrose/elevator</url>
 	</scm>
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub Twisted Spur Services</name>
+			<url>https://maven.pkg.github.com/gerridrose/elevator</url>
+		</repository>
+	</distributionManagement>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
