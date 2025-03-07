@@ -17,14 +17,14 @@ public class ElevatorController {
     ElevatorService elevatorService;
 
     // Open door request
-    @GetMapping("/openDoors")
-    public void requestOpenDoors() {
+    @GetMapping("/openDoor")
+    public void requestOpenDoor() {
         elevatorService.pressOpenDoor();
     }
 
     // Close door request
-    @GetMapping("/closeDoors")
-    public void requestCloseDoors() {
+    @GetMapping("/closeDoor")
+    public void requestCloseDoor() {
         elevatorService.pressCloseDoor();
     }
 

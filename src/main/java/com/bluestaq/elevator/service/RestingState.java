@@ -3,7 +3,7 @@ package com.bluestaq.elevator.service;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class RestingState extends ElevatorState implements IElevatorControl  {
+public class RestingState extends ElevatorStateBase implements IElevatorControl  {
     RestingState(ElevatorContext elevatorContext) {
         super(elevatorContext);
     }
@@ -37,7 +37,8 @@ public class RestingState extends ElevatorState implements IElevatorControl  {
             // if floor number matches current floor, just need to open the door
             startElevator(new DoorOpenState(this.elevatorContext));
         } else {
-            // assuming floorNumber is higher than current floor at this point
+            // assuming floorNumber is higher than current floor at this point since floor number
+            // is validated before here
             startElevator(new MovingUpState(this.elevatorContext));
         }
     }
@@ -54,21 +55,20 @@ public class RestingState extends ElevatorState implements IElevatorControl  {
         startElevator(new DoorOpenState(this.elevatorContext));
     }
 
-    private void startElevator(ElevatorState nextElevatorState) {
+    private void startElevator(ElevatorStateBase nextElevatorStateBase) {
         // Create and start a thread to simulate the elevator using the lambda approach
         Thread elevatorThread = new Thread(() -> {
             log.info("Starting elevator on floor {}.",
                     this.elevatorContext.getCurrentFloor());
 
-            log.info("Moving elevator state to {}...", this.getStateName());
-            this.elevatorContext.setElevatorState(nextElevatorState);
+            this.elevatorContext.setElevatorStateBase(nextElevatorStateBase);
 
             do {
-                this.elevatorContext.getElevatorState().run();
-            } while (!(this.elevatorContext.getElevatorState() instanceof RestingState));
+                this.elevatorContext.getElevatorStateBase().run();
+            } while (!(this.elevatorContext.getElevatorStateBase() instanceof RestingState));
 
             // RESTING state was entered again to reach this point, this signals to end this elevator thread
-            log.info("No remaining active requests for elevator.  Moving it back to the {} state...", this.getStateName());
+            log.debug("No remaining active requests for elevator, ending simulation thread.");
         });
 
         elevatorThread.start();

@@ -17,7 +17,7 @@ public class ElevatorService implements IElevatorControl {
         // set the request for the appropriate floor
         elevatorContext.getFloorRequests().get(floorNumber).arrowUp = true;
 
-        elevatorContext.getElevatorState().pressArrowUpOnFloor(floorNumber);
+        elevatorContext.getElevatorStateBase().pressArrowUpOnFloor(floorNumber);
     }
 
     public void pressArrowDownOnFloor(int floorNumber) {
@@ -26,7 +26,7 @@ public class ElevatorService implements IElevatorControl {
         // set the request for the appropriate floor
         elevatorContext.getFloorRequests().get(floorNumber).arrowDown = true;
 
-        elevatorContext.getElevatorState().pressArrowUpOnFloor(floorNumber);
+        elevatorContext.getElevatorStateBase().pressArrowUpOnFloor(floorNumber);
     }
 
     public void pressFloorNumber(int floorNumber) {
@@ -35,15 +35,15 @@ public class ElevatorService implements IElevatorControl {
         // set the request for the appropriate floor
         elevatorContext.getFloorRequests().get(floorNumber).requestedFloor = true;
 
-        elevatorContext.getElevatorState().pressArrowUpOnFloor(floorNumber);
+        elevatorContext.getElevatorStateBase().pressArrowUpOnFloor(floorNumber);
     }
 
     public void pressCloseDoor() {
-        elevatorContext.getElevatorState().pressCloseDoor();
+        elevatorContext.getElevatorStateBase().pressCloseDoor();
     }
 
     public void pressOpenDoor() {
-        elevatorContext.getElevatorState().pressOpenDoor();
+        elevatorContext.getElevatorStateBase().pressOpenDoor();
     }
 
     private void validateFloorNumber(int floorNumber) {

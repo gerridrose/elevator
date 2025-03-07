@@ -35,9 +35,17 @@ public class ElevatorContext {
     /**
      * Current state of the elevator.
      */
-    @Getter
-    @Setter
-    private ElevatorState elevatorState = new RestingState(this);
+    private ElevatorStateBase elevatorStateBase = new RestingState(this);
+
+    // No lombok for elevatorState getter and setter to wrap with synchronized
+    public synchronized ElevatorStateBase getElevatorStateBase() {
+        return elevatorStateBase;
+    }
+
+    public synchronized void setElevatorStateBase(ElevatorStateBase elevatorStateBase) {
+        log.info("Moving elevator state to {}.", elevatorStateBase.getStateName());
+        this.elevatorStateBase = elevatorStateBase;
+    }
 
     /**
      * Holds all the request states for every floor in a presorted list (based on how it was created).
@@ -56,6 +64,6 @@ public class ElevatorContext {
         }
         log.info("Created {} floors for this elevator simulation.", numFloors);
 
-        log.info("Elevator in the {} state on floor {}.", elevatorState.getStateName(), currentFloor);
+        log.info("Elevator in the {} state on floor {}.", elevatorStateBase.getStateName(), currentFloor);
     }
 }

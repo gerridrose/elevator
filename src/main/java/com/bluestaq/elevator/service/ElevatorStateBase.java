@@ -1,9 +1,9 @@
 package com.bluestaq.elevator.service;
 
-abstract public class ElevatorState implements IElevatorControl {
+abstract public class ElevatorStateBase implements IElevatorControl {
     protected ElevatorContext elevatorContext;
 
-    ElevatorState (ElevatorContext elevatorContext) {
+    ElevatorStateBase(ElevatorContext elevatorContext) {
         this.elevatorContext = elevatorContext;
     }
 

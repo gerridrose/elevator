@@ -3,7 +3,7 @@ package com.bluestaq.elevator.service;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class MovingUpState extends ElevatorState {
+public class MovingUpState extends ElevatorStateBase {
     MovingUpState(ElevatorContext elevatorContext) {
         super(elevatorContext);
     }
@@ -34,7 +34,6 @@ public class MovingUpState extends ElevatorState {
         log.info("Moving to floor {}...", this.getStateName());
 
         // set next state to run at the end of this run()
-        log.info("Moving elevator state to {}...", this.getStateName());
     }
 
     @Override
