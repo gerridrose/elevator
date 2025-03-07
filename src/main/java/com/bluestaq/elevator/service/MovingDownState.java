@@ -1,8 +1,8 @@
 package com.bluestaq.elevator.service;
 
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 
-@Component
+@Slf4j
 public class MovingDownState extends ElevatorState {
     MovingDownState(ElevatorContext elevatorContext) {
         super(elevatorContext);
@@ -14,27 +14,33 @@ public class MovingDownState extends ElevatorState {
     }
 
     @Override
-    public void pressUpOnFloor(int floorNumber) {
-
+    public void run() {
+        this.elevatorContext.setElevatorState(this);
+        log.info("Moving elevator state to {}...", this.getStateName());
     }
 
     @Override
-    public void pressDownOnFloor(int floorNumber) {
+    public void pressArrowUpOnFloor(int floorNumber) {
+        // do nothing, we're moving down right now
+    }
 
+    @Override
+    public void pressArrowDownOnFloor(int floorNumber) {
+        // see if we should stop there instead (if it is a closer downward stop)
     }
 
     @Override
     public void pressFloorNumber(int floorNumber) {
-
+        // see if we should stop there instead (if it is a closer downward stop)
     }
 
     @Override
     public void pressCloseDoor() {
-
+        // do nothing
     }
 
     @Override
     public void pressOpenDoor() {
-
+        // do nothing
     }
 }

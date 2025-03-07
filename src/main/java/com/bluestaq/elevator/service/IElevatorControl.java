@@ -8,12 +8,12 @@ public interface IElevatorControl {
      * Simulates pressing the up button on the corresponding floor external to the elevator.
      * @param floorNumber - The floor of interest.
      */
-    public void pressUpOnFloor(int floorNumber);
+    public void pressArrowUpOnFloor(int floorNumber);
     /**
      * Simulates pressing the down button on the corresponding floor external to the elevator.
      * @param floorNumber - The floor of interest.
      */
-    public void pressDownOnFloor(int floorNumber);
+    public void pressArrowDownOnFloor(int floorNumber);
 
     /**
      * Simulates pressing a floor number in the elevator.

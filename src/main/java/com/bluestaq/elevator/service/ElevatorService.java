@@ -11,30 +11,31 @@ public class ElevatorService implements IElevatorControl {
     @Autowired
     ElevatorContext elevatorContext;
 
-    public void pressUpOnFloor(int floorNumber) {
+    public void pressArrowUpOnFloor(int floorNumber) {
         validateFloorNumber(floorNumber);
 
+        // set the request for the appropriate floor
         elevatorContext.getFloorRequests().get(floorNumber).arrowUp = true;
-        // IF RESTING, SHOULD SPIN OFF THREAD
-        elevatorContext.getElevatorState().pressUpOnFloor(floorNumber);
+
+        elevatorContext.getElevatorState().pressArrowUpOnFloor(floorNumber);
     }
 
-    public void pressDownOnFloor(int floorNumber) {
+    public void pressArrowDownOnFloor(int floorNumber) {
         validateFloorNumber(floorNumber);
 
+        // set the request for the appropriate floor
         elevatorContext.getFloorRequests().get(floorNumber).arrowDown = true;
 
-        // IF RESTING, SHOULD SPIN OFF THREAD
-        elevatorContext.getElevatorState().pressUpOnFloor(floorNumber);
+        elevatorContext.getElevatorState().pressArrowUpOnFloor(floorNumber);
     }
 
     public void pressFloorNumber(int floorNumber) {
         validateFloorNumber(floorNumber);
 
+        // set the request for the appropriate floor
         elevatorContext.getFloorRequests().get(floorNumber).requestedFloor = true;
 
-        // IF RESTING, SHOULD SPIN OFF THREAD
-        elevatorContext.getElevatorState().pressUpOnFloor(floorNumber);
+        elevatorContext.getElevatorState().pressArrowUpOnFloor(floorNumber);
     }
 
     public void pressCloseDoor() {

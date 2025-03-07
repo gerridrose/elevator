@@ -1,8 +1,8 @@
 package com.bluestaq.elevator.service;
 
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 
-@Component
+@Slf4j
 public class DoorOpenState extends ElevatorState {
     DoorOpenState(ElevatorContext elevatorContext) {
         super(elevatorContext);
@@ -14,27 +14,33 @@ public class DoorOpenState extends ElevatorState {
     }
 
     @Override
-    public void pressUpOnFloor(int floorNumber) {
-
+    public void run() {
+        this.elevatorContext.setElevatorState(this);
+        log.info("Moving elevator state to {}...", this.getStateName());
     }
 
     @Override
-    public void pressDownOnFloor(int floorNumber) {
+    public void pressArrowUpOnFloor(int floorNumber) {
+        // no action
+    }
 
+    @Override
+    public void pressArrowDownOnFloor(int floorNumber) {
+        // do nothing
     }
 
     @Override
     public void pressFloorNumber(int floorNumber) {
-
+        // do nothing
     }
 
     @Override
     public void pressCloseDoor() {
-
+        // end door open timer and switch to moving up or down state
     }
 
     @Override
     public void pressOpenDoor() {
-
+        // reset door open timer
     }
 }
