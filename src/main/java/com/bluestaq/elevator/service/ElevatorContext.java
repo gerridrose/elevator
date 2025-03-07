@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 @Component
 @Slf4j
@@ -33,11 +33,14 @@ public class ElevatorContext {
     private int currentFloor = 1;
 
     /**
-     * Current state of the elevator.
+     * Current state of the elevator.  Initialized in the RESTING state.
+     * <br/><br/>
+     * NOTE: Since RestingState does not depend on the previous state it was in, the first time it is provided null.
      */
-    private ElevatorStateBase elevatorStateBase = new RestingState(this);
+    private ElevatorStateBase elevatorStateBase = new RestingState(this, null);
 
     // No lombok for elevatorState getter and setter to wrap with synchronized
+    // and log state changes easily in one place
     public synchronized ElevatorStateBase getElevatorStateBase() {
         return elevatorStateBase;
     }
@@ -51,7 +54,7 @@ public class ElevatorContext {
      * Holds all the request states for every floor in a presorted list (based on how it was created).
      */
     @Getter
-    private HashMap<Integer, Floor> floorRequests = new HashMap<>();
+    private ArrayList<Floor> floorRequests = new ArrayList<>();
 
     @PostConstruct
     void postConstruct() {
@@ -59,8 +62,7 @@ public class ElevatorContext {
         // we have to do this here because the spring context needs to have already been loaded
         // with the @Value param
         for (int i = 0; i < numFloors; i++) {
-            // (i+1) because of arrays 0-based indexing versus the first floor being 1 on elevator
-            floorRequests.put(i + 1, new Floor());
+            floorRequests.add(new Floor());
         }
         log.info("Created {} floors for this elevator simulation.", numFloors);
 

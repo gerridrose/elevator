@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MovingUpState extends ElevatorStateBase {
-    MovingUpState(ElevatorContext elevatorContext) {
-        super(elevatorContext);
+    MovingUpState(ElevatorContext elevatorContext, ElevatorStateBase previousElevatorState) {
+        super(elevatorContext, previousElevatorState);
     }
 
     @Override
@@ -15,25 +15,22 @@ public class MovingUpState extends ElevatorStateBase {
 
     @Override
     public void run() {
-        // moved up
+        log.info("Moving elevator UP...");
+
+        // simulate moving up
         try {
             Thread.sleep(elevatorContext.floorToFloorTime);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        // +1 because we are moving up
         elevatorContext.setCurrentFloor(elevatorContext.getCurrentFloor() + 1);
 
-        if (elevatorContext.getCurrentFloor() < elevatorContext.numFloors) {
+        log.info("Moved to floor {}...", elevatorContext.getCurrentFloor());
 
-        } else if (elevatorContext.getCurrentFloor() == elevatorContext.numFloors) {
-            // reached the top, go to door open since there must be a reason we reached here
-
-        } else {
-            log.error("Elevator's current floor is out of bounds!");
-        }
-        log.info("Moving to floor {}...", this.getStateName());
-
-        // set next state to run at the end of this run()
+        // run elevator algorithm to see what state is next that all states should do here
+        // and set next state to run at the end of this run()
+        this.elevatorContext.setElevatorStateBase(this.decideNextState());
     }
 
     @Override

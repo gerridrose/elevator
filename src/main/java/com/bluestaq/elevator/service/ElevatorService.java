@@ -13,19 +13,29 @@ public class ElevatorService implements IElevatorControl {
 
     public void pressArrowUpOnFloor(int floorNumber) {
         validateFloorNumber(floorNumber);
+        // edge validate that you cannot press arrow up on the highest floor number
+        if (floorNumber == elevatorContext.numFloors) {
+            throw new IllegalArgumentException("Cannot press arrow up on the highest floor, floor " + floorNumber);
+        }
 
         // set the request for the appropriate floor
         elevatorContext.getFloorRequests().get(floorNumber).arrowUp = true;
 
+        // have the running state check if it needs to immediate action on this
         elevatorContext.getElevatorStateBase().pressArrowUpOnFloor(floorNumber);
     }
 
     public void pressArrowDownOnFloor(int floorNumber) {
         validateFloorNumber(floorNumber);
+        // edge validate that you cannot press arrow down on the lowest floor number
+        if (floorNumber == 1) {
+            throw new IllegalArgumentException("Cannot press arrow down on the lowest floor, floor " + floorNumber);
+        }
 
         // set the request for the appropriate floor
         elevatorContext.getFloorRequests().get(floorNumber).arrowDown = true;
 
+        // have the running state check if it needs to immediate action on this
         elevatorContext.getElevatorStateBase().pressArrowUpOnFloor(floorNumber);
     }
 
@@ -35,14 +45,17 @@ public class ElevatorService implements IElevatorControl {
         // set the request for the appropriate floor
         elevatorContext.getFloorRequests().get(floorNumber).requestedFloor = true;
 
+        // have the running state check if it needs to immediate action on this
         elevatorContext.getElevatorStateBase().pressArrowUpOnFloor(floorNumber);
     }
 
     public void pressCloseDoor() {
+        // have the running state check if it needs to immediate action on this
         elevatorContext.getElevatorStateBase().pressCloseDoor();
     }
 
     public void pressOpenDoor() {
+        // have the running state check if it needs to immediate action on this
         elevatorContext.getElevatorStateBase().pressOpenDoor();
     }
 

@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RestingState extends ElevatorStateBase implements IElevatorControl  {
-    RestingState(ElevatorContext elevatorContext) {
-        super(elevatorContext);
+    RestingState(ElevatorContext elevatorContext, ElevatorStateBase previousElevatorState) {
+        super(elevatorContext, previousElevatorState);
     }
 
     @Override
@@ -20,26 +20,26 @@ public class RestingState extends ElevatorStateBase implements IElevatorControl 
 
     @Override
     public void pressArrowUpOnFloor(int floorNumber) {
-        startElevator(new MovingUpState(this.elevatorContext));
+        startElevator(new MovingUpState(this.elevatorContext, this));
     }
 
     @Override
     public void pressArrowDownOnFloor(int floorNumber) {
-        startElevator(new MovingDownState(this.elevatorContext));
+        startElevator(new MovingDownState(this.elevatorContext, this));
     }
 
     @Override
     public void pressFloorNumber(int floorNumber) {
         if (this.elevatorContext.getCurrentFloor() > floorNumber) {
             // if floor number is lower than current floor, need to start moving down
-            startElevator(new MovingDownState(this.elevatorContext));
+            startElevator(new MovingDownState(this.elevatorContext, this));
         } else if (this.elevatorContext.getCurrentFloor() == floorNumber) {
             // if floor number matches current floor, just need to open the door
-            startElevator(new DoorOpenState(this.elevatorContext));
+            startElevator(new DoorOpenState(this.elevatorContext, this));
         } else {
             // assuming floorNumber is higher than current floor at this point since floor number
             // is validated before here
-            startElevator(new MovingUpState(this.elevatorContext));
+            startElevator(new MovingUpState(this.elevatorContext, this));
         }
     }
 
@@ -52,7 +52,7 @@ public class RestingState extends ElevatorStateBase implements IElevatorControl 
 
     @Override
     public void pressOpenDoor() {
-        startElevator(new DoorOpenState(this.elevatorContext));
+        startElevator(new DoorOpenState(this.elevatorContext, this));
     }
 
     private void startElevator(ElevatorStateBase nextElevatorStateBase) {

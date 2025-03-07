@@ -5,8 +5,8 @@ import org.apache.commons.lang3.time.StopWatch;
 
 @Slf4j
 public class DoorOpenState extends ElevatorStateBase {
-    DoorOpenState(ElevatorContext elevatorContext) {
-        super(elevatorContext);
+    DoorOpenState(ElevatorContext elevatorContext, ElevatorStateBase previousElevatorState) {
+        super(elevatorContext, previousElevatorState);
     }
 
     private boolean closeDoorRequested = false;
@@ -20,6 +20,23 @@ public class DoorOpenState extends ElevatorStateBase {
     @Override
     public void run() {
         log.info("Elevator door opened on floor {}.", this.elevatorContext.getCurrentFloor());
+        Floor floorRequests = this.elevatorContext.getFloorRequests().get(elevatorContext.getCurrentFloor() + 1);
+
+        // was this a requested floor?  if so, clear the request
+        if (floorRequests.requestedFloor) {
+            log.info("Someone requested to stop at this floor.  Clearing the request now.");
+            floorRequests.requestedFloor = false;
+        }
+
+        // what direction were we moving before this?  clear the arrow request if matching
+        if (this.previousElevatorState instanceof MovingUpState && floorRequests.arrowUp) {
+            log.info("Someone requested arrow up on this floor.  Clearing the request now.");
+            floorRequests.arrowUp = false;
+        } else if (this.previousElevatorState instanceof MovingDownState && floorRequests.arrowDown) {
+            log.info("Someone requested arrow down on this floor.  Clearing the request now.");
+            floorRequests.arrowDown = false;
+        }
+
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
@@ -48,7 +65,7 @@ public class DoorOpenState extends ElevatorStateBase {
         log.info("Elevator door closed on floor {}.", this.elevatorContext.getCurrentFloor());
         // run elevator algorithm to see what state is next that all states should do here
         // and set next state to run at the end of this run()
-        this.elevatorContext.setElevatorStateBase(new RestingState(this.elevatorContext));
+        this.elevatorContext.setElevatorStateBase(this.decideNextState());
     }
 
     @Override
