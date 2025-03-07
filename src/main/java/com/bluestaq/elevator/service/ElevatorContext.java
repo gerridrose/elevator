@@ -39,7 +39,7 @@ public class ElevatorContext {
      */
     private ElevatorStateBase elevatorStateBase = new RestingState(this, null);
 
-    // No lombok for elevatorState getter and setter to wrap with synchronized
+    // No lombok for elevatorState to wrap with synchronized
     // and log state changes easily in one place
     public synchronized ElevatorStateBase getElevatorStateBase() {
         return elevatorStateBase;
@@ -53,8 +53,13 @@ public class ElevatorContext {
     /**
      * Holds all the request states for every floor in a presorted list (based on how it was created).
      */
-    @Getter
     private ArrayList<Floor> floorRequests = new ArrayList<>();
+
+    // No lombok for floorRequests to wrap with synchronized
+    // and log state changes easily in one place
+    public synchronized ArrayList<Floor> getFloorRequests() {
+        return floorRequests;
+    }
 
     @PostConstruct
     void postConstruct() {

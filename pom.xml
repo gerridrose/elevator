@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.bluestaq</groupId>
 	<artifactId>elevator</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>elevator</name>
 	<description>Simulation of an elevator.</description>
 	<url/>

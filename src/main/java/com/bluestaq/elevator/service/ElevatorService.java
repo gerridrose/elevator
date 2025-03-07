@@ -1,8 +1,12 @@
 package com.bluestaq.elevator.service;
 
+import com.bluestaq.elevator.dto.FloorDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -19,7 +23,7 @@ public class ElevatorService implements IElevatorControl {
         }
 
         // set the request for the appropriate floor
-        elevatorContext.getFloorRequests().get(floorNumber).arrowUp = true;
+        elevatorContext.getFloorRequests().get(floorNumber - 1).arrowUp = true;
 
         // have the running state check if it needs to immediate action on this
         elevatorContext.getElevatorStateBase().pressArrowUpOnFloor(floorNumber);
@@ -33,17 +37,17 @@ public class ElevatorService implements IElevatorControl {
         }
 
         // set the request for the appropriate floor
-        elevatorContext.getFloorRequests().get(floorNumber).arrowDown = true;
+        elevatorContext.getFloorRequests().get(floorNumber - 1).arrowDown = true;
 
         // have the running state check if it needs to immediate action on this
-        elevatorContext.getElevatorStateBase().pressArrowUpOnFloor(floorNumber);
+        elevatorContext.getElevatorStateBase().pressArrowDownOnFloor(floorNumber);
     }
 
     public void pressFloorNumber(int floorNumber) {
         validateFloorNumber(floorNumber);
 
         // set the request for the appropriate floor
-        elevatorContext.getFloorRequests().get(floorNumber).requestedFloor = true;
+        elevatorContext.getFloorRequests().get(floorNumber - 1).requestedFloor = true;
 
         // have the running state check if it needs to immediate action on this
         elevatorContext.getElevatorStateBase().pressArrowUpOnFloor(floorNumber);
@@ -63,5 +67,18 @@ public class ElevatorService implements IElevatorControl {
         if (floorNumber < 1 || floorNumber > elevatorContext.numFloors) {
             throw new IllegalArgumentException("floorNumber must be between 1 and " + (elevatorContext.numFloors - 1));
         }
+    }
+
+    public List<FloorDto> getActiveFloorRequests() {
+        ArrayList<FloorDto> floorDtos = new ArrayList<>();
+
+        for (int index = 0 ; index < elevatorContext.getFloorRequests().size(); index++) {
+            Floor floor = elevatorContext.getFloorRequests().get(index);
+            if (floor.requestedFloor || floor.arrowUp || floor.arrowDown) {
+                floorDtos.add(new FloorDto(index + 1, floor));
+            }
+        }
+
+        return floorDtos;
     }
 }

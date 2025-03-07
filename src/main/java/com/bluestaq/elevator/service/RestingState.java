@@ -20,12 +20,30 @@ public class RestingState extends ElevatorStateBase implements IElevatorControl 
 
     @Override
     public void pressArrowUpOnFloor(int floorNumber) {
-        startElevator(new MovingUpState(this.elevatorContext, this));
+        // just because user pressed arrow up, we could be above the floor they pressed that
+        // on and may need to move down
+        if (floorNumber < elevatorContext.getCurrentFloor()) {
+            startElevator(new MovingDownState(this.elevatorContext, this));
+        } else if (floorNumber == elevatorContext.getCurrentFloor()) {
+            // just open the door, we're on the floor they pressed the arrow on
+            startElevator(new DoorOpenState(this.elevatorContext, this));
+        } else {
+            startElevator(new MovingUpState(this.elevatorContext, this));
+        }
     }
 
     @Override
     public void pressArrowDownOnFloor(int floorNumber) {
-        startElevator(new MovingDownState(this.elevatorContext, this));
+        // just because user pressed arrow down, we could be below the floor they pressed that
+        // on and may need to move down
+        if (floorNumber < elevatorContext.getCurrentFloor()) {
+            startElevator(new MovingDownState(this.elevatorContext, this));
+        } else if (floorNumber == elevatorContext.getCurrentFloor()) {
+            // just open the door, we're on the floor they pressed the arrow on
+            startElevator(new DoorOpenState(this.elevatorContext, this));
+        } else {
+            startElevator(new MovingUpState(this.elevatorContext, this));
+        }
     }
 
     @Override
