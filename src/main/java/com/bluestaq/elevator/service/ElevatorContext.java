@@ -20,10 +20,10 @@ public class ElevatorContext {
     int numFloors;
 
     @Value("${elevator.time.floorToFloor}")
-    private int floorToFloorTime;
+    int floorToFloorTime;
 
     @Value("${elevator.time.doorOpen}")
-    private int doorOpenTime;
+    int doorOpenTime;
 
     /**
      * Current floor of the elevator is on.

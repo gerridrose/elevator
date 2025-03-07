@@ -15,9 +15,26 @@ public class MovingUpState extends ElevatorState {
 
     @Override
     public void run() {
-        this.elevatorContext.setElevatorState(this);
-        log.info("Moving elevator state to {}...", this.getStateName());
+        // moved up
+        try {
+            Thread.sleep(elevatorContext.floorToFloorTime);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        elevatorContext.setCurrentFloor(elevatorContext.getCurrentFloor() + 1);
 
+        if (elevatorContext.getCurrentFloor() < elevatorContext.numFloors) {
+
+        } else if (elevatorContext.getCurrentFloor() == elevatorContext.numFloors) {
+            // reached the top, go to door open since there must be a reason we reached here
+
+        } else {
+            log.error("Elevator's current floor is out of bounds!");
+        }
+        log.info("Moving to floor {}...", this.getStateName());
+
+        // set next state to run at the end of this run()
+        log.info("Moving elevator state to {}...", this.getStateName());
     }
 
     @Override

@@ -54,22 +54,18 @@ public class RestingState extends ElevatorState implements IElevatorControl  {
         startElevator(new DoorOpenState(this.elevatorContext));
     }
 
-    private void startElevator(ElevatorState newElevatorState) {
+    private void startElevator(ElevatorState nextElevatorState) {
         // Create and start a thread to simulate the elevator using the lambda approach
         Thread elevatorThread = new Thread(() -> {
             log.info("Starting elevator on floor {}.",
                     this.elevatorContext.getCurrentFloor());
 
-            try {
-                newElevatorState.run();
-                Thread.sleep(50);
+            log.info("Moving elevator state to {}...", this.getStateName());
+            this.elevatorContext.setElevatorState(nextElevatorState);
 
-                // done fulfilling all active requests
-                this.elevatorContext.setElevatorState(this);
-
-            } catch (InterruptedException e) {
-                log.warn("Elevator simulation was interrupted! {}", e.getMessage());
-            }
+            do {
+                this.elevatorContext.getElevatorState().run();
+            } while (!(this.elevatorContext.getElevatorState() instanceof RestingState));
 
             // RESTING state was entered again to reach this point, this signals to end this elevator thread
             log.info("No remaining active requests for elevator.  Moving it back to the {} state...", this.getStateName());

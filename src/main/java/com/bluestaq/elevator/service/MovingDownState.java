@@ -15,7 +15,8 @@ public class MovingDownState extends ElevatorState {
 
     @Override
     public void run() {
-        this.elevatorContext.setElevatorState(this);
+
+        // set next state to run at the end of this run()
         log.info("Moving elevator state to {}...", this.getStateName());
     }
 
