@@ -13,16 +13,22 @@ The assumptions that will be made on this simulation project.
 - Configurable number of floors at startup.
 - Configurable time to move between floors at startup.
 - Configurable time to wait while elevator door is open on a floor at startup.
+- Can press the open door button to reset the open door timer.
+- Can request to close an elevator door early, before the open timer expires.
 - Can press any number of floor buttons in any order at any given time in the elevator via REST (including OpenAPI/Swagger UI).
-- Can press any external arrow buttons on any floor in any order at any given time to signal the elevator for pickup, 
-and it will be queued appropriately based on the elevator algorithm.
+- Can press any external arrow buttons on any floor in any order at any given time to signal the elevator for pickup, and it will be queued appropriately based on the elevator algorithm.
 - The elevator algorithm, when in a running state, will continue to move up until it reaches the top floor requested, then toggle
 into a moving down state if there are floors below it with requests waiting.
+- Sample test class that show how Junit/Mockito unit testing would be done on the entire project under normal circumstances, and to meet typical code coverage test requirements.
+- Sample usage of global REST exception handling that significantly reduces code duplication.
+- Github action in place showing simple CI practice by having every commit build, and if successful, deploys the artifact to Github's package manager.
 
 ## Features Not Implemented
-- Change the number of floors runtime.
+- Change the number of floors at **runtime**.
 - Control the number of elevators at startup or runtime.
 - Change the elevator algorithm at startup or runtime (ex. move to nearest request pickup floor?).
+- Some type of simulation for emergency buttons.
+- Front end client display and control of the of the simulation.  That would be pretty cool.
 
 ## Development Tools
 This project was built with the following tools & framework:
