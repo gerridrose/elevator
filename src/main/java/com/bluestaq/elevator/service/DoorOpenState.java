@@ -20,12 +20,12 @@ public class DoorOpenState extends ElevatorStateBase {
     @Override
     public void run() {
         log.info("Elevator door opened on floor {}.", this.elevatorContext.getCurrentFloor());
-        Floor floorRequests = this.elevatorContext.getFloorRequests().get(elevatorContext.getCurrentFloor() - 1);
+        FloorRequest floorRequests = this.elevatorContext.getFloorRequests().get(elevatorContext.getCurrentFloor() - 1);
 
         // was this a requested floor?  if so, clear the request
-        if (floorRequests.requestedFloor) {
+        if (floorRequests.requestedStop) {
             log.info("Someone requested to GET OFF at this floor.  Clearing the request now.");
-            floorRequests.requestedFloor = false;
+            floorRequests.requestedStop = false;
         }
 
         // what direction were we moving before this?  clear the arrow request if matching
@@ -53,7 +53,7 @@ public class DoorOpenState extends ElevatorStateBase {
 
         if (this.previousElevatorState instanceof RestingState) {
             // if we were resting before and just opened the doors, clear all the requests on this floor
-            floorRequests.requestedFloor = false;
+            floorRequests.requestedStop = false;
             floorRequests.arrowUp = false;
             floorRequests.arrowDown = false;
         }

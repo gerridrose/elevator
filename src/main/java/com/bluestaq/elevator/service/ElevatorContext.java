@@ -53,11 +53,11 @@ public class ElevatorContext {
     /**
      * Holds all the request states for every floor in a presorted list (based on how it was created).
      */
-    private ArrayList<Floor> floorRequests = new ArrayList<>();
+    private ArrayList<FloorRequest> floorRequests = new ArrayList<>();
 
     // No lombok for floorRequests to wrap with synchronized
     // and log state changes easily in one place
-    public synchronized ArrayList<Floor> getFloorRequests() {
+    public synchronized ArrayList<FloorRequest> getFloorRequests() {
         return floorRequests;
     }
 
@@ -67,7 +67,7 @@ public class ElevatorContext {
         // we have to do this here because the spring context needs to have already been loaded
         // with the @Value param
         for (int i = 0; i < numFloors; i++) {
-            floorRequests.add(new Floor());
+            floorRequests.add(new FloorRequest());
         }
         log.info("Created {} floors for this elevator simulation.", numFloors);
 

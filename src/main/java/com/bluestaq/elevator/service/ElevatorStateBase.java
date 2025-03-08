@@ -26,13 +26,13 @@ abstract public class ElevatorStateBase implements IElevatorControl {
 
         // we are going to want the current floor requests in a lot of cases
         // (remember to -1 when converting to array reference)
-        Floor currentFloor = elevatorContext.getFloorRequests().get(elevatorContext.getCurrentFloor() - 1);
+        FloorRequest currentFloorRequest = elevatorContext.getFloorRequests().get(elevatorContext.getCurrentFloor() - 1);
 
         // first find out if we were moving up or down previously
         switch (this.previousElevatorState) {
             case MovingUpState movingUpState -> {
                 // check if the floor we just moved to has a request
-                if (currentFloor.requestedFloor || currentFloor.arrowUp || currentFloor.arrowDown) {
+                if (currentFloorRequest.requestedStop || currentFloorRequest.arrowUp || currentFloorRequest.arrowDown) {
                     // we need to open door next
                     return new DoorOpenState(elevatorContext, this);
                 }
@@ -40,8 +40,8 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                 // the floor we just moved to does not have a request, start from the one above it now
                 for (int floorIndex = elevatorContext.getCurrentFloor();
                      floorIndex < elevatorContext.numFloors; floorIndex++) {
-                    Floor floor = elevatorContext.getFloorRequests().get(floorIndex);
-                    if (floor.requestedFloor || floor.arrowUp || floor.arrowDown) {
+                    FloorRequest floorRequest = elevatorContext.getFloorRequests().get(floorIndex);
+                    if (floorRequest.requestedStop || floorRequest.arrowUp || floorRequest.arrowDown) {
                         // further up request found we need to continue moving up
                         return new MovingUpState(elevatorContext, this);
                     }
@@ -50,8 +50,8 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                 // before letting elevator go to resting state
                 for (int floorIndex = elevatorContext.getCurrentFloor() - 2;
                      floorIndex >= 0; floorIndex--) {
-                    Floor floor = elevatorContext.getFloorRequests().get(floorIndex);
-                    if (floor.requestedFloor || floor.arrowDown || floor.arrowUp) {
+                    FloorRequest floorRequest = elevatorContext.getFloorRequests().get(floorIndex);
+                    if (floorRequest.requestedStop || floorRequest.arrowDown || floorRequest.arrowUp) {
                         // further down request found we need to continue moving down
                         return new MovingDownState(elevatorContext, this);
                     }
@@ -61,7 +61,7 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                 // check if the floor we just moved to has a request
                 // (remember to -1 when converting to array reference)
 
-                if (currentFloor.requestedFloor || currentFloor.arrowDown || currentFloor.arrowUp) {
+                if (currentFloorRequest.requestedStop || currentFloorRequest.arrowDown || currentFloorRequest.arrowUp) {
                     // we need to open door next
                     return new DoorOpenState(elevatorContext, this);
                 }
@@ -69,8 +69,8 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                 // the floor we just moved to does not have a request, start from the one below it now
                 for (int floorIndex = elevatorContext.getCurrentFloor() - 2;
                      floorIndex >= 0; floorIndex--) {
-                    Floor floor = elevatorContext.getFloorRequests().get(floorIndex);
-                    if (floor.requestedFloor || floor.arrowUp || floor.arrowDown) {
+                    FloorRequest floorRequest = elevatorContext.getFloorRequests().get(floorIndex);
+                    if (floorRequest.requestedStop || floorRequest.arrowUp || floorRequest.arrowDown) {
                         // further down request found we need to continue moving down
                         return new MovingDownState(elevatorContext, this);
                     }
@@ -80,8 +80,8 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                 // before letting elevator go to resting state
                 for (int floorIndex = elevatorContext.getCurrentFloor();
                      floorIndex < elevatorContext.numFloors; floorIndex++) {
-                    Floor floor = elevatorContext.getFloorRequests().get(floorIndex);
-                    if (floor.requestedFloor || floor.arrowUp || floor.arrowDown) {
+                    FloorRequest floorRequest = elevatorContext.getFloorRequests().get(floorIndex);
+                    if (floorRequest.requestedStop || floorRequest.arrowUp || floorRequest.arrowDown) {
                         // further up request found we need to continue moving up
                         return new MovingUpState(elevatorContext, this);
                     }
@@ -95,8 +95,8 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                     // the floor we just moved to does not have a request, start from the one above it now
                     for (int floorIndex = elevatorContext.getCurrentFloor();
                          floorIndex < elevatorContext.numFloors; floorIndex++) {
-                        Floor floor = elevatorContext.getFloorRequests().get(floorIndex);
-                        if (floor.requestedFloor || floor.arrowUp) {
+                        FloorRequest floorRequest = elevatorContext.getFloorRequests().get(floorIndex);
+                        if (floorRequest.requestedStop || floorRequest.arrowUp) {
                             // further up request found we need to continue moving up
                             return new MovingUpState(elevatorContext, this);
                         }
@@ -105,8 +105,8 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                     // before letting elevator go to resting state
                     for (int floorIndex = elevatorContext.getCurrentFloor() - 2;
                          floorIndex >= 0; floorIndex--) {
-                        Floor floor = elevatorContext.getFloorRequests().get(floorIndex);
-                        if (floor.requestedFloor || floor.arrowDown || floor.arrowUp) {
+                        FloorRequest floorRequest = elevatorContext.getFloorRequests().get(floorIndex);
+                        if (floorRequest.requestedStop || floorRequest.arrowDown || floorRequest.arrowUp) {
                             // further down request found we need to continue moving down
                             return new MovingDownState(elevatorContext, this);
                         }
@@ -115,8 +115,8 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                     // the floor we just moved to does not have a request, start from the one below it now
                     for (int floorIndex = elevatorContext.getCurrentFloor() - 2;
                          floorIndex >= 0; floorIndex--) {
-                        Floor floor = elevatorContext.getFloorRequests().get(floorIndex);
-                        if (floor.requestedFloor || floor.arrowUp) {
+                        FloorRequest floorRequest = elevatorContext.getFloorRequests().get(floorIndex);
+                        if (floorRequest.requestedStop || floorRequest.arrowUp) {
                             // further down request found we need to continue moving down
                             return new MovingDownState(elevatorContext, this);
                         }
@@ -126,8 +126,8 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                     // before letting elevator go to resting state
                     for (int floorIndex = elevatorContext.getCurrentFloor();
                          floorIndex < elevatorContext.numFloors; floorIndex++) {
-                        Floor floor = elevatorContext.getFloorRequests().get(floorIndex);
-                        if (floor.requestedFloor || floor.arrowUp || floor.arrowDown) {
+                        FloorRequest floorRequest = elevatorContext.getFloorRequests().get(floorIndex);
+                        if (floorRequest.requestedStop || floorRequest.arrowUp || floorRequest.arrowDown) {
                             // further up request found we need to continue moving up
                             return new MovingUpState(elevatorContext, this);
                         }
@@ -139,7 +139,7 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                 // our current floor first,
                 // then searching upward before downward,
                 // otherwise let go back to resting
-                if (currentFloor.requestedFloor || currentFloor.arrowUp || currentFloor.arrowDown) {
+                if (currentFloorRequest.requestedStop || currentFloorRequest.arrowUp || currentFloorRequest.arrowDown) {
                     return new DoorOpenState(elevatorContext, this);
                 }
 
@@ -148,8 +148,8 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                 for (int floorIndex = elevatorContext.getCurrentFloor();
                      floorIndex < elevatorContext.numFloors; floorIndex++) {
 
-                    Floor floor = elevatorContext.getFloorRequests().get(floorIndex);
-                    if (floor.requestedFloor || floor.arrowUp || floor.arrowDown) {
+                    FloorRequest floorRequest = elevatorContext.getFloorRequests().get(floorIndex);
+                    if (floorRequest.requestedStop || floorRequest.arrowUp || floorRequest.arrowDown) {
                         // further up request found we need to continue moving up
                         return new MovingUpState(elevatorContext, this);
                     }
@@ -158,8 +158,8 @@ abstract public class ElevatorStateBase implements IElevatorControl {
                 // before letting elevator go to resting state
                 for (int floorIndex = elevatorContext.getCurrentFloor() - 2;
                      floorIndex >= 0; floorIndex--) {
-                    Floor floor = elevatorContext.getFloorRequests().get(floorIndex);
-                    if (floor.requestedFloor || floor.arrowDown || floor.arrowUp) {
+                    FloorRequest floorRequest = elevatorContext.getFloorRequests().get(floorIndex);
+                    if (floorRequest.requestedStop || floorRequest.arrowDown || floorRequest.arrowUp) {
                         // further down request found we need to continue moving down
                         return new MovingDownState(elevatorContext, this);
                     }

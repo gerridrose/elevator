@@ -47,7 +47,7 @@ public class ElevatorService implements IElevatorControl {
         validateFloorNumber(floorNumber);
 
         // set the request for the appropriate floor
-        elevatorContext.getFloorRequests().get(floorNumber - 1).requestedFloor = true;
+        elevatorContext.getFloorRequests().get(floorNumber - 1).requestedStop = true;
 
         // have the running state check if it needs to immediate action on this
         elevatorContext.getElevatorStateBase().pressArrowUpOnFloor(floorNumber);
@@ -73,9 +73,9 @@ public class ElevatorService implements IElevatorControl {
         ArrayList<FloorDto> floorDtos = new ArrayList<>();
 
         for (int index = 0 ; index < elevatorContext.getFloorRequests().size(); index++) {
-            Floor floor = elevatorContext.getFloorRequests().get(index);
-            if (floor.requestedFloor || floor.arrowUp || floor.arrowDown) {
-                floorDtos.add(new FloorDto(index + 1, floor));
+            FloorRequest floorRequest = elevatorContext.getFloorRequests().get(index);
+            if (floorRequest.requestedStop || floorRequest.arrowUp || floorRequest.arrowDown) {
+                floorDtos.add(new FloorDto(index + 1, floorRequest));
             }
         }
 
