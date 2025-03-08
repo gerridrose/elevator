@@ -3,6 +3,7 @@ package com.bluestaq.elevator.service;
 import com.bluestaq.elevator.dto.FloorDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,10 +16,13 @@ public class ElevatorService implements IElevatorControl {
     @Autowired
     ElevatorContext elevatorContext;
 
+    @Value("${elevator.numFloors}")
+    int numFloors;
+
     public void pressArrowUpOnFloor(int floorNumber) {
         validateFloorNumber(floorNumber);
         // edge validate that you cannot press arrow up on the highest floor number
-        if (floorNumber == elevatorContext.numFloors) {
+        if (floorNumber == numFloors) {
             throw new IllegalArgumentException("Cannot press arrow up on the highest floor, floor " + floorNumber);
         }
 
@@ -50,7 +54,7 @@ public class ElevatorService implements IElevatorControl {
         elevatorContext.getFloorRequests().get(floorNumber - 1).requestedStop = true;
 
         // have the running state check if it needs to immediate action on this
-        elevatorContext.getElevatorStateBase().pressArrowUpOnFloor(floorNumber);
+        elevatorContext.getElevatorStateBase().pressFloorNumber(floorNumber);
     }
 
     public void pressCloseDoor() {
@@ -63,9 +67,9 @@ public class ElevatorService implements IElevatorControl {
         elevatorContext.getElevatorStateBase().pressOpenDoor();
     }
 
-    private void validateFloorNumber(int floorNumber) {
-        if (floorNumber < 1 || floorNumber > elevatorContext.numFloors) {
-            throw new IllegalArgumentException("floorNumber must be between 1 and " + (elevatorContext.numFloors - 1));
+    void validateFloorNumber(int floorNumber) {
+        if (floorNumber < 1 || floorNumber > numFloors) {
+            throw new IllegalArgumentException("floorNumber must be between 1 and " + (numFloors - 1));
         }
     }
 

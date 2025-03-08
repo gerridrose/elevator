@@ -35,17 +35,17 @@ public class MovingUpState extends ElevatorStateBase {
 
     @Override
     public void pressArrowUpOnFloor(int floorNumber) {
-        // see if we should stop there instead (if it is a closer upward stop)
+        // do nothing, the state algorithm will handle
     }
 
     @Override
     public void pressArrowDownOnFloor(int floorNumber) {
-        // do nothing, we're moving up right now
+        // do nothing, the state algorithm will handle
     }
 
     @Override
     public void pressFloorNumber(int floorNumber) {
-        // see if we should stop there instead (if it is a closer downward stop)
+        // do nothing, the state algorithm will handle
     }
 
     @Override

@@ -63,9 +63,8 @@ public class RestingState extends ElevatorStateBase implements IElevatorControl 
 
     @Override
     public void pressCloseDoor() {
-        // if resting, there is an action really does nothing
-        log.warn("Pressed close door while in {} state.  While not invalid, this action will do nothing.",
-                this.getStateName());
+        // if resting, there is an action really does nothing, but tell the user why
+        throw new IllegalArgumentException("Pressed close door while in {} state.  The door is already closed.");
     }
 
     @Override
