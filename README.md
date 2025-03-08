@@ -28,6 +28,7 @@ into a moving down state if there are floors below it with requests waiting.
 - Control the number of elevators at startup or runtime.
 - Change the elevator algorithm at startup or runtime (ex. move to nearest request pickup floor?).
 - Some type of simulation for emergency buttons.
+- Only minimal javadoc was actually put in place, but a ton of code comments were used.  I am assuming the javadoc is a minimal concern for this type of project submission.
 - Front end client display and control of the of the simulation.  That would be pretty cool.
 
 ## Development Tools
