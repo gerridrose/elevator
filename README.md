@@ -38,11 +38,19 @@ these endpoints.
 
 The below steps assumes you have already configured your machine with the above-mentioned Development Tools. 
 
-1. **git clone** the project to a directory of your choice.
+1. ```git clone``` the project to a directory of your choice.
 2. Change directory with your favorite terminal to the root directory of the project.
-3. **mvn clean package**
-4. **java -jar target/elevator-{version}.jar** - this will use the default configuration properties
+3. ```mvn clean package```
+4. ```java -jar target/elevator-{version}.jar``` - this will use the default configuration properties
 5. Observe the console startup success noting the amount of elevator floors and the starting floor.
 6. Open your favorite browser to **http://localhost:8080/elevator/swagger-ui/index.html#/**
 7. Review the endpoints and test them as you wish, reviewing the console log at the same time.
 8. That is all, hope you like!
+
+Additionally, the following configuration properties can be set on application startup:
+- elevator.numFloors (default - 20)
+- elevator.time.floorToFloor (default - 1000ms)
+- elevator.time.doorOpen (default - 5000ms)
+
+Here is an example service launch command to override the simulation to have 30 floors:<br/><br/
+```java -jar target/elevator-{version}.jar --elevator.numFloors=30```
