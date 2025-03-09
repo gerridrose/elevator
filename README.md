@@ -59,5 +59,5 @@ Additionally, the following configuration properties can be set on application s
 - elevator.time.floorToFloor (default - 1000ms)
 - elevator.time.doorOpen (default - 5000ms)
 
-Here is an example service launch command to override the simulation to have 30 floors:<br/><br/
+Here is an example service launch command to override the simulation to have 30 floors:<br/><br/>
 ```java -jar target/elevator-{version}.jar --elevator.numFloors=30```
